@@ -60,7 +60,7 @@ def find_dot(contour):
             return pair
 
         # Метод для нахождения левой, правой, верхней и нижней точки, а также для нахождения ширины и высоты объектов
-def find_square(contour):
+def find_params(contour):
     max_x = contour[0]
     max_y = contour[0]
     min_x = contour[0]
@@ -91,7 +91,7 @@ def find_square(contour):
 # ввиду проблем с нахождением границ такими методами как Canny или Хаффа
 # Мы будем искать на изображении оттенки синего в диапазоне этого цвета
 
-image = cv2.imread('./dataset/IMG_9844.jpg')
+image = cv2.imread('./DataSet/IMG_9844.jpg')
 fig, ax = plt.subplots(1, 3, figsize=(15, 6))
 
 image_2 = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -108,7 +108,7 @@ ax[2].imshow(hsv_image)
 fig1, ax1 = plt.subplots(1, 2, figsize=(15, 6))
 ax1[0].imshow(mask_blue, cmap="gray")
 ax1[1].imshow(result_blue)
-isWritten = cv2.imwrite('./dataset/work_image.jpg', mask_blue)
+isWritten = cv2.imwrite('./DataSet/work_image.jpg', mask_blue)
 
 # Полученное изображение контуров белого цвета на черном фоне пропускаем через Canny и находим границы наших объектов
 
@@ -138,7 +138,7 @@ plt.show()
 # что площадь стола всегда больше и определим контур этого объекта как первый и найдем все необходимые нам составляющие
 max_square = 0
 for i in range(len(contours_img)):
-    t,x1,x2,y1,y2, width, height = find_square(contours_img[i])
+    t,x1,x2,y1,y2, width, height = find_params(contours_img[i])
     if(t > max_square):
         ind = i
         max_square = t
@@ -156,7 +156,7 @@ print(x_max, x_min, y_max, y_min, width_1, height_1)
 # Находим все необходимое для стола
 max_square2 = 0
 for i in range(len(contours_img)):
-    t,x1,x2,y1,y2, width, height = find_square(contours_img[i])
+    t,x1,x2,y1,y2, width, height = find_params(contours_img[i])
     if((t > max_square2) and (i != ind)):
         ind2 = i
         max_square2 = t
@@ -246,6 +246,7 @@ ax.plot(x_min2[1], x_min2[0], 'yo') # --> самая левая
 ax.plot(y_max2[1], y_max2[0], 'ro') # --> самая верхняя
 ax.plot(y_min2[1], y_min2[0], 'go') # --> самая нижнаяя
 
+ax.plot(x_med[1],x_med[0], 'bo')
 
 plt.show()
 
